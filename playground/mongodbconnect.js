@@ -21,17 +21,17 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp', (err, db) => {
 	// 	console.log(JSON.stringify(result.ops, undefined, 2))
 	// })
 
-	// db.collection('Users').insertOne({
-	// 	name: 'matt',
-	// 	age: 28,
-	// 	locations: 'Easterton'
-	// }, (err, result) => {
-	// 	if (err) {
-	// 		console.log('Couldn\'t connect', err)
-	// 	}
+	db.collection('Users').insertOne({
+		name: 'nick',
+		age: 28,
+		locations: 'Amesbury'
+	}, (err, result) => {
+		if (err) {
+			console.log('Couldn\'t connect', err)
+		}
 
-	// 	console.log(JSON.stringify(result.ops, undefined, 2))
-	// })
+		console.log(JSON.stringify(result.ops, undefined, 2))
+	})
 
 	db.close();
 });
