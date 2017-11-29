@@ -1,5 +1,5 @@
-var express = require('express')
-var bodyParser = require('body-parser')
+var express = require('express');
+var bodyParser = require('body-parser');
 
 var {mongoose} = require('./db/mongoose.js');
 var {Todo} = require('./models/todo.js');
@@ -16,16 +16,24 @@ app.post('/todos', (req,res) => {
 	})
 
 	newTodo.save().then((r) => {
-		console.log('saved', r)
+		console.log('saved', r);
 		res.send(r);
 	}, (e) => {
-		console.log('not saved', e)
+		console.log('not saved', e);
 		res.status(400).send(e);
-	})
+	});
+});
+
+app.get('/todos', (req,res) => {
+	Todo.find().then((todos) => {
+		res.send({todos});
+	}).catch((e) => {
+		res.status(400).send(e);
+	});
 });
 
 app.listen(3000, () => {
 	console.log('listening on port 3000');
-})
+});
 
 module.exports = {app};
