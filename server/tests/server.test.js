@@ -70,8 +70,8 @@ describe('GET/todos', () => {
 			})
 			.end(done)
 
-	})
-})
+	});
+});
 
 describe('GET/todos/:id', () => {
 	it('should get a specific todo', (done) => {
@@ -82,20 +82,55 @@ describe('GET/todos/:id', () => {
 				expect(res.body.todo.text).toBe(todos[0].text);
 			})
 			.end(done)
-	})
+	});
 
 	it('should return 404 if todo not found', (done) => {
 	request(app)
 		.get(`/todos/${new ObjectID('6a1ff110f97cac9db90524ff')}`)
 		.expect(404)
 		.end(done)
-	})
+	});
 
 	it('should return 404 if not valid ID', (done) => {
 	request(app)
 		.get(`/todos/6a1ff110f97cac9db90524ff`)
 		.expect(404)
 		.end(done)
-	})
+	});
+});
+
+describe('DELETE/todos/:id', () => {
+	it('should delete a specific todo', (done) => {
+		var id = todos[0]._id.toHexString()
+		request(app)
+			.delete(`/todos/${id}`)
+			.expect(200)
+			.expect((res) => {
+				expect(res.body.todo._id).toBe(id);
+			})
+			.end((err, res) => {
+				if (err) {
+					return done(err)
+				}
+				Todo.findById(id).then((todo) => {
+					expect(todo).toBe(null)
+					done()
+				}).catch((e) => done(e))	
+			})
+	});
+
+	it('should return 404 if id not found', (done) => {
+		request(app)
+		.get(`/todos/${new ObjectID('6a1ff110f97cac9db90524ff')}`)
+		.expect(404)
+		.end(done)
+	});
+
+	it('should return 404 if not valid ID', (done) => {
+		request(app)
+		.get(`/todos/6a1ff110f97cac9db90524ff`)
+		.expect(404)
+		.end(done)
+	});
 })
 
